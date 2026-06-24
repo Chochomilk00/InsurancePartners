@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Insurance.ViewModels
+﻿namespace Insurance.ViewModels
 {
     public class PartnerViewModel
     {

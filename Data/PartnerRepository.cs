@@ -36,18 +36,34 @@ public class PartnerRepository : IPartnerRepository
         return await connection.QueryAsync<PartnerViewModel>(sql);
     }
 
-    public async Task<Partner?> GetPartnerByID(int ID)
+    public async Task<PartnerDetailsViewModel?> GetPartnerByID(int ID)
     {
         using var connection = _dbConnection.Create();
 
-        const string sql = """
-            SELECT "ID", "FirstName", "LastName", "Address", "PartnerNumber", "CroatianPIN",
-                "PartnerTypeID", "CreatedAtUtc", "CreatedByUser", "IsForeign", "ExternalCode", "Gender"
-            FROM "Partners"
-            WHERE "ID" = @ID;
-            """;
+        const string partnerSql = """
+        SELECT "ID", "FirstName" || ' ' || "LastName" AS "FullName", "Address", "PartnerNumber", "CroatianPIN",
+            "PartnerTypeID", "CreatedAtUtc", "CreatedByUser", "IsForeign", "ExternalCode", "Gender"
+        FROM "Partners"
+        WHERE "ID" = @ID;
+        """;
 
-        return await connection.QuerySingleOrDefaultAsync<Partner>(sql, new { ID = ID });
+        const string policiesSql = """
+        SELECT "ID", "PolicyNumber", "PolicyAmount"
+        FROM "Policies"
+        WHERE "PartnerID" = @ID
+        ORDER BY "ID";
+        """;
+
+        var partner = await connection.QuerySingleOrDefaultAsync<PartnerDetailsViewModel>(partnerSql, new { ID });
+
+        if (partner == null)
+            return null;
+
+        var policies = await connection.QueryAsync<PolicyViewModel>(policiesSql, new { ID });
+
+        partner.Policies = policies.ToList();
+
+        return partner;
     }
 
     public async Task<int> CreatePartner(CreatePartnerViewModel partner)
