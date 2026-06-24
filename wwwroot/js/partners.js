@@ -27,4 +27,18 @@
     $(document).on("click", "#addPolicyModal .close", function () {
         $("#addPolicyModal").modal("hide");
     });
+
+    $("#partnerSearch").on("input", function () {
+        const searchValue = $(this).val().toLowerCase();
+
+        $(".partner-row").each(function () {
+            const rowText = $(this).text().toLowerCase();
+
+            if (rowText.includes(searchValue)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
 });

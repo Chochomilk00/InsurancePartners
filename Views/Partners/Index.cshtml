@@ -17,7 +17,14 @@
     </div>
 }
 
-<a asp-controller="Partners" asp-action="Create" class="btn btn-primary mb-3"> Add new partner </a>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="form-group mb-0">
+        <input type="text" id="partnerSearch" class="form-control partner-search" placeholder="Search" />
+    </div>
+
+    <a asp-controller="Partners" asp-action="Create" class="btn btn-primary"> Add new partner </a>
+</div>
 
 <table class="table table-striped table-hover">
     <thead>

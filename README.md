@@ -3,6 +3,7 @@
 ## Features
 
 * Display a list of all partners
+* Search partners from the partner list
 * Show partner details in a modal window
 * Show partner policies inside the partner details modal
 * Adding a new partner

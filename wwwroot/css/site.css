@@ -47,3 +47,7 @@ body {
     background-color: #e8f5e9;
     font-weight: 600;
 }
+
+.partner-search {
+    max-width: 450px;
+}
