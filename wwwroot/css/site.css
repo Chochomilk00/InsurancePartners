@@ -1,0 +1,49 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.modal-header .close {
+    border: none;
+    background: transparent;
+    font-size: 1.8rem;
+    font-weight: 300;
+    outline: none;
+    box-shadow: none;
+}
+
+.modal-header .close:focus, .modal-header .close:hover {
+    outline: none;
+    box-shadow: none;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.partnerform .form-control {
+    max-width: 450px;
+}
+
+.new-partner-row {
+    background-color: #e8f5e9;
+    font-weight: 600;
+}

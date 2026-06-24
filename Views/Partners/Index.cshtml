@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Insurance.ViewModels.PartnerViewModel>
+
+@{
+    ViewData["Title"] = "Partners";
+}
+
+<h1>Partners</h1>
+
+@if (TempData["PolicyError"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["PolicyError"]
+
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<a asp-controller="Partners" asp-action="Create" class="btn btn-primary mb-3"> Add new partner </a>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Full name</th>
+            <th>Partner number</th>
+            <th>Croatian PIN</th>
+            <th>Partner type</th>
+            <th>Created at UTC</th>
+            <th>Is foreign</th>
+            <th>Gender</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var partner in Model)
+        {
+            <tr class="partner-row @(ViewBag.HighlightedID == partner.ID ? "new-partner-row" : "")" partnerID="@partner.ID" style="cursor: pointer;">
+                <td>@(partner.IsSpecial ? "* " : "")@partner.FullName</td>
+                <td>@partner.PartnerNumber</td>
+                <td>@partner.CroatianPIN</td>
+                <td>@(partner.PartnerTypeID == 1 ? "Personal" : "Legal")</td>
+                <td>@partner.CreatedAtUtc.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@(partner.IsForeign ? "Yes" : "No")</td>
+                <td>@partner.Gender</td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-outline-primary add-policy-btn" data-partner-id="@partner.ID" data-partner-name="@partner.FullName">
+                        Add policy
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="partnerDetailsModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" id="partnerDetailsContent">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addPolicyModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-controller="Policies" asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Add policy</h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" name="PartnerID" id="policyPartnerID" />
+
+                    <p class="text-muted mb-3">
+                        Partner: <strong id="policyPartnerName"></strong>
+                    </p>
+
+                    <div class="form-group">
+                        <label for="PolicyNumber">Policy number</label>
+                        <input type="text" name="PolicyNumber" id="PolicyNumber" class="form-control" required minlength="10" maxlength="15" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PolicyAmount">Policy amount</label>
+                        <input type="number" name="PolicyAmount" id="PolicyAmount" class="form-control" required min="0.01"step="0.01" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        Save policy
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/partners.js"></script>
+}
